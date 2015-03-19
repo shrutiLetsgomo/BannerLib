@@ -1,6 +1,6 @@
 (function() {
     // Define our constructor
-    this.Banner = function() {
+    var Banner = function() {
         // Define option defaults
         var defaults = {
             data: 'This is the default banner will open www.google.com',
@@ -60,12 +60,12 @@
 
     // Add banner to the document object modal
     function _addBannerToDOM() {
-        bannerSection = '<a' +
-            '   href="' + this.options.link + '"' +
-            '   id="banner_bottom"  ' +
-            '   class="banner_bottom_fixed banner_bottom_hide">  ' +
-            this.options.data +
-            '</a>';
+         var   bannerSection = '<a' +
+                '   href="' + this.options.link + '"' +
+                '   id="banner_bottom"  ' +
+                '   class="banner_bottom_fixed banner_bottom_hide">  ' +
+                this.options.data +
+                '</a>';
         document.body.innerHTML += bannerSection;
     }
 
@@ -77,31 +77,56 @@
         } else {
             bannerBottomClassList.remove('banner_bottom_hide');
         }
-    }
+    };
 
-    // Banner intialize when document object model loaded
-    document.onreadystatechange = function() {
-        if (document.readyState == "interactive") {
-            // If bannerShow not present in config.js
-            if (typeof(bannerShow) === 'undefined') {
-                throw new Error('bannerShow is not defined in config.js');
-            }
-            if (bannerShow) {
-                var banner;
-                // If bannerHtmlString or bannerLink not present in config.js
-                if (typeof(bannerHtmlString) !== 'undefined' & typeof(bannerLink) !== 'undefined') {
-                    banner = new Banner({
-                        data: bannerHtmlString,
-                        link: bannerLink
-                    });
-                } else {
-                    banner = new Banner();
-                    banner.initialize();
-                    throw new Error('bannerHtmlString or link are not defined in config.js');
-                }
-                // initialize banner
-                banner.initialize();
-            }
+    ! function(name, definition) {
+
+        if (typeof module != 'undefined') module.exports = definition()
+        else if (typeof define == 'function' && typeof define.amd == 'object') define(definition)
+        else this[name] = definition()
+
+    }('documentReady', function() {
+
+        var fns = [],
+            listener, doc = document,
+            hack = doc.documentElement.doScroll,
+            domContentLoaded = 'DOMContentLoaded',
+            loaded = (hack ? /^loaded|^c/ : /^loaded|^i|^c/).test(doc.readyState)
+
+
+        if (!loaded)
+            doc.addEventListener(domContentLoaded, listener = function() {
+                doc.removeEventListener(domContentLoaded, listener)
+                loaded = 1
+                while (listener = fns.shift()) listener()
+            })
+
+        return function(fn) {
+            loaded ? fn() : fns.push(fn)
         }
-    }
+
+    });
+
+    documentReady(function() {
+        // If bannerShow not present in config.js
+        if (typeof(bannerShow) === 'undefined') {
+            throw new Error('bannerShow is not defined in config.js');
+        }
+        if (bannerShow) {
+            var banner;
+            // If bannerHtmlString or bannerLink not present in config.js
+            if (typeof(bannerHtmlString) !== 'undefined' & typeof(bannerLink) !== 'undefined') {
+                banner = new Banner({
+                    data: bannerHtmlString,
+                    link: bannerLink
+                });
+            } else {
+                banner = new Banner();
+                banner.initialize();
+                throw new Error('bannerHtmlString or link are not defined in config.js');
+            }
+            // initialize banner
+            banner.initialize();
+        }
+    });
 })();
