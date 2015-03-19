@@ -1,8 +1,9 @@
 (function() {
     document.onreadystatechange = function() {
-        if (document.readyState == "interactive" & Banner_show) {
+        if (document.readyState == "interactive" & bannerShow) {
             var banner = new Banner({
-                data: Banner_html_string
+                data: bannerHtmlString,
+                link: bannerLink
             });
             banner.initialize();
         }
@@ -10,22 +11,22 @@
 
     this.Banner = function() {
         var defaults = {
-            data: Banner_html_string
+            data: bannerHtmlString,
+            link: bannerLink
         }
-
         if (arguments[0] && typeof arguments[0] === "object") {
-            this.options = extendDefaults(defaults, arguments[0]);
+            this.options = _extendDefaults(defaults, arguments[0]);
         }
     }
 
     Banner.prototype.initialize = function() {
-        buildup.call(this);
-        addBanner.call(this);
-        showBanner.call(this);
-        initializeEvents.call(this);
+        _validateProperties.call(this);
+        _addBannerToDOM.call(this);
+        _showOrHideBannerOnWindowScroll.call(this);
+        _initializeEvents.call(this);
     }
 
-    function extendDefaults(source, properties) {
+    function _extendDefaults(source, properties) {
         var property;
         for (property in properties) {
             if (properties.hasOwnProperty(property)) {
@@ -35,7 +36,7 @@
         return source;
     }
 
-    function buildup() {
+    function _validateProperties() {
         if (typeof this.options.data === "string") {
             data = this.options.data;
         } else {
@@ -44,20 +45,31 @@
 
     }
 
-    function initializeEvents() {
+    function _initializeEvents() {
+        var link = this.options.link;
+        _addScrollEvent();
+        _addOnclickEventOnBanner(link);
+    }
+
+    function _addScrollEvent() {
         window.onscroll = function() {
-            showBanner.call(this);
+            _showOrHideBannerOnWindowScroll.call(this);
         }
     }
 
-    function addBanner() {
+    function _addOnclickEventOnBanner(link) {
+        document.getElementById('banner_bottom').onclick = function() {
+            location.assign(link);
+        }
+    }
 
+    function _addBannerToDOM() {
         bannerSection = '<div id="banner_bottom" class="banner_bottom_fixed banner_bottom_hide">' +
             this.options.data + '</div>';
         document.body.innerHTML += bannerSection;
     }
 
-    function showBanner() {
+    function _showOrHideBannerOnWindowScroll() {
         var bannerBottomClassList = document.getElementById('banner_bottom').classList;
         if (window.scrollY < 300) {
             bannerBottomClassList.add('banner_bottom_hide');
