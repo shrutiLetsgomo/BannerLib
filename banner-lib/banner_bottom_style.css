@@ -1,22 +1,17 @@
-.banner_bottom_hide {
-	display: none;
-}
-
+.banner_bottom_hide { display: none }
 .banner_bottom_fixed {
-  position: fixed;
-  z-index: 9;
-  left: 0;
-  right: 0;
-  bottom: 0;
+    position: fixed;
+    z-index: 9;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
-
 #banner_bottom {
-  background-color: #ecdad8;
-  color: #57464F;
-  border: 1px solid #ccc;
-  text-align: center;
-  padding: 10px;
-  font-weight: bold;
-  font-size: medium;
+    background-color: #ecdad8;
+    color: #57464F;
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    font-size: medium;
 }
-
