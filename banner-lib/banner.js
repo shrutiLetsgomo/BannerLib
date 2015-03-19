@@ -60,12 +60,12 @@
 
     // Add banner to the document object modal
     function _addBannerToDOM() {
-         var   bannerSection = '<a' +
-                '   href="' + this.options.link + '"' +
-                '   id="banner_bottom"  ' +
-                '   class="banner_bottom_fixed banner_bottom_hide">  ' +
-                this.options.data +
-                '</a>';
+        var bannerSection = '<a' +
+            '   href="' + this.options.link + '"' +
+            '   id="banner_bottom"  ' +
+            '   class="banner_bottom_fixed banner_bottom_hide">  ' +
+            this.options.data +
+            '</a>';
         document.body.innerHTML += bannerSection;
     }
 
@@ -110,7 +110,8 @@
     documentReady(function() {
         // If bannerShow not present in config.js
         if (typeof(bannerShow) === 'undefined') {
-            throw new Error('bannerShow is not defined in config.js');
+            console.log('bannerShow is not defined in config.js');
+            return;
         }
         if (bannerShow) {
             var banner;
@@ -123,7 +124,7 @@
             } else {
                 banner = new Banner();
                 banner.initialize();
-                throw new Error('bannerHtmlString or link are not defined in config.js');
+                console.log('bannerHtmlString or link are not defined in config.js');
             }
             // initialize banner
             banner.initialize();
