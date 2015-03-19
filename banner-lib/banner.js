@@ -1,14 +1,4 @@
 (function() {
-    document.onreadystatechange = function() {
-        if (document.readyState == "interactive" & bannerShow) {
-            var banner = new Banner({
-                data: bannerHtmlString,
-                link: bannerLink
-            });
-            banner.initialize();
-        }
-    }
-
     this.Banner = function() {
         var defaults = {
             data: bannerHtmlString,
@@ -46,9 +36,7 @@
     }
 
     function _initializeEvents() {
-        var link = this.options.link;
         _addScrollEvent();
-        _addOnclickEventOnBanner(link);
     }
 
     function _addScrollEvent() {
@@ -57,15 +45,13 @@
         }
     }
 
-    function _addOnclickEventOnBanner(link) {
-        document.getElementById('banner_bottom').onclick = function() {
-            location.assign(link);
-        }
-    }
-
     function _addBannerToDOM() {
-        bannerSection = '<div id="banner_bottom" class="banner_bottom_fixed banner_bottom_hide">' +
-            this.options.data + '</div>';
+        bannerSection = '<a' +
+            '   href="' + this.options.link + '"' +
+            '   id="banner_bottom"  ' +
+            '   class="banner_bottom_fixed banner_bottom_hide">  ' +
+            this.options.data +
+            '</a>';
         document.body.innerHTML += bannerSection;
     }
 
@@ -75,6 +61,16 @@
             bannerBottomClassList.add('banner_bottom_hide');
         } else {
             bannerBottomClassList.remove('banner_bottom_hide');
+        }
+    }
+
+    document.onreadystatechange = function() {
+        if (document.readyState == "interactive" & bannerShow) {
+            var banner = new Banner({
+                data: bannerHtmlString,
+                link: bannerLink
+            });
+            banner.initialize();
         }
     }
 })();
