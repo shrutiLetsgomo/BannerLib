@@ -7,7 +7,7 @@
             link: "http://www.google.com"
         }
         this.options = defaults;
-         // Create options by extending defaults with the passed in arugments
+        // Create options by extending defaults with the passed in arugments
         if (arguments[0] && typeof arguments[0] === "object") {
             this.options = _extendDefaults(defaults, arguments[0]);
         }
@@ -34,10 +34,10 @@
 
     // Validate object properties
     function _validateProperties() {
-            /*
-     * If content is an HTML string, append the HTML string.
-     * If content is a domNode, append its content.
-     */
+        /*
+         * If content is an HTML string, append the HTML string.
+         * If content is a domNode, append its content.
+         */
         if (typeof this.options.data === "string") {
             data = this.options.data;
         } else {
