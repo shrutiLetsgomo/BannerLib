@@ -1,9 +1,10 @@
 (function() {
     this.Banner = function() {
         var defaults = {
-            data: bannerHtmlString,
-            link: bannerLink
+            data: 'This is the default banner will open www.google.com',
+            link: "http://www.google.com"
         }
+        this.options = defaults;
         if (arguments[0] && typeof arguments[0] === "object") {
             this.options = _extendDefaults(defaults, arguments[0]);
         }
@@ -65,12 +66,24 @@
     }
 
     document.onreadystatechange = function() {
-        if (document.readyState == "interactive" & bannerShow) {
-            var banner = new Banner({
-                data: bannerHtmlString,
-                link: bannerLink
-            });
-            banner.initialize();
+        if (document.readyState == "interactive") {
+            if (typeof(bannerShow) === 'undefined') {
+                throw new Error('bannerShow is not defined in config.js');
+            }
+            if (bannerShow) {
+                var banner;
+                if (typeof(bannerHtmlString) !== 'undefined' & typeof(bannerLink) !== 'undefined') {
+                    banner = new Banner({
+                        data: bannerHtmlString,
+                        link: bannerLink
+                    });
+                } else {
+                    banner = new Banner();
+                    banner.initialize();
+                    throw new Error('bannerHtmlString or link are not defined in config.js');
+                }
+                banner.initialize();
+            }
         }
     }
 })();
