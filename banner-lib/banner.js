@@ -79,6 +79,7 @@
         }
     };
 
+    //check if document is ready 
     ! function(name, definition) {
 
         if (typeof module != 'undefined') module.exports = definition()
@@ -93,7 +94,7 @@
             domContentLoaded = 'DOMContentLoaded',
             loaded = (hack ? /^loaded|^c/ : /^loaded|^i|^c/).test(doc.readyState)
 
-
+        //check if document is loaded
         if (!loaded)
             doc.addEventListener(domContentLoaded, listener = function() {
                 doc.removeEventListener(domContentLoaded, listener)
@@ -107,6 +108,7 @@
 
     });
 
+    // Execute method on document ready
     documentReady(function() {
         // If bannerShow not present in config.js
         if (typeof(bannerShow) === 'undefined') {
